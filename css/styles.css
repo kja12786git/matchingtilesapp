@@ -30,10 +30,11 @@ h1 {
     
 }
 .nameFeed {
-    text-indent: 15rem;
+    text-indent: 20px;
 }
 .nameFeed:before {
-    content: 'Player Name: '
+    content: 'Player Name: ';
+    color: blue;
 }
 
 #gamearea {
