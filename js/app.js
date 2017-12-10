@@ -7,8 +7,9 @@ let nameFeed = $('.nameFeed');
 let items = $('.item');
 //const icons = ['☺','☺','☆','★','♡','❤'];
 const icons = ['1','2','3','4','5','6'];
-const togameboard = [];
-const playLog = [];
+const togameboard = []; //for use in generating gameboard on each load
+const firstZero = []; // for purposes of gameboard
+const playLog = []; //for player in-game only
 const logs = console.log;
 
 nameInputDiv.toggleClass('hidden');
@@ -51,15 +52,29 @@ $(document).ready(() => {
         let w = Math.floor((Math.random() * z) + 0);
         // wo() will check random returns of 0 and also attempt to catch duplicates in first set
         // & replace them with a new random return. This should helpt fill all available slots with without duplicating one.
+        // this can be done manually if needed, however, automation is better to get it to be scalable to any gameboard size if I expand the game.
+
         let wo = () => {
             let y;
-            while (w == 0) {
+            while (w == 0 && x < gfxLngth -1) {
                 w = Math.floor((Math.random() * z) + 0);
                 y = w;
-                continue;
-            }
-            return y;
+                
+                //allow for only one 0 to push to gameboard
+                if (w == 0 && (firstZero.length == 0)) {
+                    firstZero.push(w);                    
+                    togameboard.push(w);
+                }
             
+                continue;}
+                
+                if (y != undefined) {
+                    return y;
+                }
+                    else { return false;
+                    
+                }
+        
         };
 //        wo();
         let ww = wo();
