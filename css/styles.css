@@ -78,6 +78,9 @@ h1 {
     font-size: 3rem;
     
 }
+.newPlay {
+    background: #000;
+}
 .newPlay:after {
     content: '';
     background-color: rgb(0,0,0) rgba(0,0,0,.7);
