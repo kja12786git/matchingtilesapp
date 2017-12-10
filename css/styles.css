@@ -3,6 +3,7 @@ body {
     position: relative;
     cursor: default;
 }
+
 body, body * {
     margin: 0;
     border: 0;
@@ -10,16 +11,22 @@ body, body * {
     font-size: 100%;
     
 }
+
 h1 {
     font-size: 300%;
 }
+
 .hidden {
     visibility: hidden;
+    position: fixed;
+    z-index: -1;
     transition: all 1s;
     
 }
+
 .popup {
     position: fixed;
+    z-index:1000;
     visibility: visible;
     background: white;
     color: black;
@@ -29,12 +36,16 @@ h1 {
     top: 20px;
     
 }
+
 .nameFeed {
     text-indent: 20px;
+    
 }
+
 .nameFeed:before {
     content: 'Player Name: ';
     color: blue;
+    
 }
 
 #gamearea {
@@ -43,6 +54,7 @@ h1 {
     background: #CCC;
     
 }
+
 #gamearea > div {
     flex-direction: column;
     width: 100%;
@@ -52,10 +64,23 @@ h1 {
     cursor: pointer;
 
 }
+
 #gamearea > div > div {
     flex-direction: column;
     height: 100px;
     background: white;
     margin: 1rem;
-
+    
+}
+.item {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 3rem;
+    
+}
+.newPlay {
+    background-color: #222;
+    border: 1px white solid;
+    box-shadow: 3px 2px 1px grey;
+    
 }
