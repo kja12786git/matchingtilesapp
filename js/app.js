@@ -27,7 +27,7 @@ const randValue = () => {
 };
 
 const togameboard = []; //for use in generating gameboard on each load
-const firstZero = []; // for purposes of gameboard
+const firstZero = []; // *** I used this arr to limit 0 index from pushing more than once, it still did not work 100% with the randomValue ...
 const playLog = []; //for player in-game only
 const randomLog = [];
 
@@ -57,14 +57,14 @@ nameinput.on('keyup', () => {
 
 const getGameboard = togameboard.forEach((ret) => {
             logs(ret + " frm getGameboard");
-                if (ret == randValue()) {
+                if (togameboard > 0 && ret == randValue()) {
                     return ret;
                 }
             return false;
         });
 
 const newPlay = (x) => {
-    x.addClass('newPlay');
+    items[x].addClass('newPlay');
     playLog.push(x);
     logs(x.html() +" was added to: .. ", playLog + "(play log)");
     
@@ -107,26 +107,33 @@ class Get {
 // a good way may be to generate a first half randomly, and then pull values from a duplicate array to randomize the remaining half using the original values
 
 
-for (let x = 0; x < slotsLngth/2; x++) { // I have simplified this without need for the longer code I had before. It still does not give a perfect variety of random options between a set range, but I suppose this is something I cannot evaluate with this method.
-        let w = randValue();
-        let neww = randValue();
-//        if (z != 0 && z > slotsLngth) { z = 0}
-        randomLog.push(w); logs(randomLog + " random generated log.");
-    if (getGameboard == w) {
+for (let x = 0; x < slotsLngth/2; x++) { // ***I have simplified this without need for the longer code I had before. It still does not give a perfect variety of random options between a set range, but I suppose this is something I cannot evaluate with this method.
+    let w = randValue();
+    randomLog.push(w); logs(randomLog + " random generated log.");
+    
+    if (togameboard.length == 0) {
+        togameboard.push(w);
+        items[x].append(icons[w] + 'temp');
+        continue;
+    } // *** it worked perfectly one time but not consistently
+    
+    if (togameboard.length > 0 && getGameboard ==  w) {
         continue;
     } else {
         togameboard.push(w);
         logs(togameboard + " all made it to the gameboard.");
-        items[x].append(icons[neww]);
+        items[x].append(icons[w] + 'temp');
     }
-    
 }
 //  set a timer after first click which resets to 0 on the second click &&
 //  set the action & scoring logic for each two clicks
-    items.forEach((elmnt) => {
-        elmnt.addEventListener("click", newPlay(elmnt));
+    // add the onlcick function to the gameBoard elements
+    items.forEach((x) => {
+        items[x].addEventListener('click', newPlay());
     });
-    
+
+
+
 //    Docode.timer;
 
 //}); // end of document.ready
