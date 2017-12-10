@@ -47,18 +47,23 @@ $(document).ready(() => {
     for (let x = 0; x < slotsLngth; x++) {
         let z = gfxLngth - 1; //.Math.Random;
         if (z != 0 && z > slotsLngth) { z = 0}
+        //get a quality random return to push to the gameboard
         let w = Math.floor((Math.random() * z) + 0);
+        // wo() will check random returns of 0 and also attempt to catch duplicates in first set
+        // & replace them with a new random return. This should helpt fill all available slots with without duplicating one.
         let wo = () => {
             let y;
-            while (w == 0 || togameboard.forEach(w)) {
+            while (w == 0) {
                 w = Math.floor((Math.random() * z) + 0);
                 y = w;
+                continue;
             }
             return y;
+            
         };
-        wo;
-        let ww = wo;
-        logs(ww + " return from wo");
+//        wo();
+        let ww = wo();
+        logs(ww + " return from wo()");
         
         if (x <= z) { togameboard.push(w);}
     console.log(togameboard);
