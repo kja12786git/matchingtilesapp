@@ -1,10 +1,10 @@
-$(document).ready(() => {
+$('document').ready(() => {
 // popup control functions
 let nameInputDiv = $('#name-input');
 let nameinput = $('form > input');
 let submitName = $('#name-input form button');
 let nameFeed = $('.nameFeed');
-let items = $('.item');
+const items = $('.item');
 const icons1 = ['☺','☺','☆','★','♡','❤'];
 const icons2 = ['1','2','3','4','5','6'];
 //const icons = icons1.concat(icons2);
@@ -39,10 +39,10 @@ nameinput.on('keyup', () => {
 
 });
 
-let newPlay = () => {
-    this.addClass("newPlay");
-    playLog.push(this);
-    logs(this +" was added to: .. ", playLog + "(play log)");
+const newPlay = (x) => {
+    x.addClass('newPlay');
+    playLog.push(x);
+    logs(x.html() +" was added to: .. ", playLog + "(play log)");
     
 };
 
@@ -53,7 +53,7 @@ const evaluate = (x) => {
 };
 
 
-class Docode {
+class Get {
     constructor(timer, scoreCount, stopListener, randomIndex) {
         this.timer = () => {
                 let start = 0;
@@ -89,13 +89,13 @@ class Docode {
 
     for (let x = 0; x < slotsLngth/2; x++) { // this is not putting accurate results, however, it does function well depsite
         let z = gfxLngth; //.Math.R`andom;
-        if (z != 0 && z > slotsLngth) { z = 0}
+//        if (z != 0 && z > slotsLngth) { z = 0}
         //get a quality random return of numbers ranging from all from 0 to length of available variety to push to the gameboard
         var w = Math.floor((Math.random() * z) + 0);
         w = Number(w);
         randomLog.push(w); logs(randomLog + " random generated log.");
         
-        // find each index value in the gameboard
+        // find each index value in the current gameboard arr
         let getGameboard = togameboard.forEach((ret) => {
             logs(ret + " frm getGameboard");
                 if (ret == w) {
@@ -105,25 +105,36 @@ class Docode {
         });       
         
     /* wo() will check random returns of 0 & replace them with a new random return that is also within the above range. This should help to fill all available slots with without duplicating one. This can be done manually if needed, however, automation is better to get it to be scalable to any gameboard size if I expand the game.*/
-        let neww;
+        var neww;
+        
+        // I have narrowed all checks for duplicates down into wo() function... it seems as if it was pushing the number to the togameboard & the DOM before it can check getGameboard for duplicates. Now, it may be continue everything a a duplicate before it pushes. There is a margin of error to be fixed...
         let wo = () => {
             neww = Math.floor((Math.random() * z) + 0);            
             // allow for only one 0 to push to gameboard
-                if (w == 0 && firstZero.length == 0 && getGameboard === false) {
-                firstZero.push(w); togameboard.push(w);
-            } else {
-                logs(w + " is a duplicate, changing to new.");
-//                w = neww;
-            }
-            
-                if (neww != undefined && getGameboard != neww) {
-                    return neww;        
+            if (w == 0 && firstZero.length == 0) {
+            firstZero.push(w); togameboard.push(w);
                 } else {
-                    wo();
+                    if (firstZero.length > 0 && togameboard.length > 0) {
+                        logs(w + " is a duplicate, changing to new.");
+                        w = neww;
+                    }
                 }
                     
-            };
-            
+            if (randomLog.length < 2) {
+                    togameboard.push(neww);
+                    items[x].append(icons[neww]);
+                    return neww;
+            } else {
+                if (getGameboard === true) {
+                logs(w + " is a duplicate, changing to new.");
+                    w = neww;               
+                }
+            }
+        };
+        
+        while (togameboard.length > 1 && getGameboard != false) {
+            window.setTimeout(wo(),700) ;
+        }
 //       wo();
         let ww = wo(); logs(ww + " return from wo()");
 //        ww;
@@ -136,20 +147,18 @@ class Docode {
             
         };*/
         // call this function to find duplicates pushed about to be pushed to the gameboard and get a new random before pushing any duplicate to the gameboard array
-        if (w == 0) { w = ww;}
 
-        if (x <= z) { togameboard.push(w);} //limits amount of pushed items to gameboard to desired length frm array of available options
+//        if (x <= z) { togameboard.push(w);} //limits amount of pushed items to gameboard to desired length frm array of available options
         
-        items[x].append(icons[w] + '☺ temp'); // use gameboard array as reference to push to the matching DOM gameboard.
+//        items[x].append(icons[w] + '☺ temp'); // use gameboard array as reference to push to the matching DOM gameboard.
 
     }
 
 // set a timer after first click which resets to 0 on the second click &&
 // set the action & scoring logic for each two clicks
-    for (let x=0; x < slotsLngth; x++) {
-        let elmnt = items[x];
+    items.forEach((elmnt) => {
         elmnt.addEventListener("click", newPlay(elmnt));
-    }
+    });
     
 //    Docode.timer;
 
