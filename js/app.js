@@ -37,8 +37,9 @@ nameinput.on('keyup', () => {
 $(document).ready(() => {
     
 // append each of the given icons to a button on the gameboard twice in random sequence
-// to do this I can push random number from [0 to desired length] to an array and pop any additional copy until it is complete
-// or do this in two halfs
+// there must be two of each and not three for the standard 3*4 gameboard.
+// to do this I can push random number from [0 to desired length] to an array replace any additional copy until it is complete
+// a good way may be to generate a first half randomly, and then pull values from a duplicate array to randomize the remaining half using the original values
     let slotsLngth = items.length;
     let gfxLngth = icons.length;
     logs(slotsLngth + ':All slots.' + gfxLngth + ':Icons(gfx)count');
