@@ -65,6 +65,15 @@ $('#s2').click(() => {
     $('#gamearea > div').addClass('style2');
 });
 
+// new game or reset game
+$('#reset').click(() => {
+    items.removeClass('newPlay');
+    while (playLog.length > 0) {
+        playLog.pop();
+    }
+});
+
+
 //  set a timer after first click which resets to 0 on the second click &&
 //  set the action & scoring logic for each two clicks
     // add the onlcick function to the gameBoard elements
@@ -113,6 +122,15 @@ const newPlay = (x) => { // the play controls and points function
                     item.addClass('newPlay');
                     playLog.push(item);
                     
+                if (moves % 2 == 0) {
+                    alert('Nice Match *!')
+                    scoreTrack;
+                    logs(scoreTrack);
+                    $('#score').innerHTML = scoreTrack.scoreCount()
+                    
+                }                    
+                    
+                    
                 } else {
                     if (item['0'].id != i['0'].id) {
                         alert('invalid play');
@@ -121,14 +139,6 @@ const newPlay = (x) => { // the play controls and points function
                 }
                         
             });
-            
-                    if (moves % 2 == 0) {
-                        alert('Nice Match *!')
-                        scoreTrack;
-                        logs(scoreTrack);
-                        $('#score').innerHTML = scoreTrack.scoreCount()
-                        
-                    }
             
             break;
             
