@@ -26,6 +26,14 @@ const randValue = () => {
     return x;
 };
 
+let randValueNi = (high, low) => {
+    let xx = Math.floor((Math.random() * high) + low);
+    
+//    if (xx <= high && xx >= low) {
+        return xx;
+//    } else { return false}
+};
+
 const togameboard = []; //for use in generating gameboard on each load
 const firstZero = []; // *** I used this arr to limit 0 index from pushing more than once, it still did not work 100% with the randomValue ...
 const playLog = []; //for player in-game only
@@ -93,7 +101,7 @@ class Get {
             return 100 * this.timer;
         },
         
-        this.randomIndex = randomIndex;
+        this.randomIndex = randValue();
         
     }
 
@@ -106,8 +114,8 @@ class Get {
 // to do this I can push random number from [0 to desired length] to an array replace any additional copy until it is complete
 // a good way may be to generate a first half randomly, and then pull values from a duplicate array to randomize the remaining half using the original values
 
-
-for (let x = 0; x < slotsLngth/2; x++) { // ***I have simplified this without need for the longer code I had before. It still does not give a perfect variety of random options between a set range, but I suppose this is something I cannot evaluate with this method.
+let halfBoard = slotsLngth/2;
+for (let x = 0; x < halfBoard; x++) { // ***I have simplified this without need for the longer code I had before. It still does not give a perfect variety of random options between a set range, but I suppose this is something I cannot evaluate with this method.
     let w = randValue();
     randomLog.push(w); logs(randomLog + " random generated log.");
     
@@ -117,24 +125,48 @@ for (let x = 0; x < slotsLngth/2; x++) { // ***I have simplified this without ne
         continue;
     } // *** it worked perfectly one time but not consistently
     
-    if (togameboard.length > 0 && getGameboard ==  w) {
+    if (togameboard.length > 0 && getGameboard === false ) {
         continue;
     } else {
         togameboard.push(w);
         logs(togameboard + " all made it to the gameboard.");
         items[x].append(icons[w] + 'temp');
+        
+        //duplicate the values of the first half of the gameboard to create matches for the game to wor
+        while (x == (slotsLngth/2 - 1) && togameboard.length != slotsLngth) {
+           togameboard.forEach((i) => {
+               togameboard.push(i);
+           });
+        }
     }
+    
+    
+    
 }
+
+// to create second half of gameboard and randomize I will pull from the previous for loop which this will be dependent on because the values were already duplicated for use in the gameboard
+for (let x = halfBoard; x < slotsLngth; x++) {
+    let getRandom = randValueNi(x,(slotsLngth - slotsLngth));
+    logs(getRandom + ' current random from togameboard'); // since this random value return does not work well I may have to feed the values from the ones already pushed to the DOM
+    
+//    items[x].append(togameboard[getRandom] + 'temp');
+//    logs(getRandom);
+
+}
+
+// use DOM instead of Math.Random to create matching items
+for (let i = 0; i < halfBoard; i++) {
+    let x = halfBoard;
+    items[i+x].append(items[i].innerText);
+}
+
+//logs(items);
+
 //  set a timer after first click which resets to 0 on the second click &&
 //  set the action & scoring logic for each two clicks
     // add the onlcick function to the gameBoard elements
-    items.forEach((x) => {
-        items[x].addEventListener('click', newPlay());
-    });
 
 
-
-//    Docode.timer;
 
 //}); // end of document.ready
 
