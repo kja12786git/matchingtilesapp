@@ -79,14 +79,13 @@ $('#s3').click(() => {
     
 });
 
-// new game or reset game
+// reset gameboard
 $('#reset').click(() => {
     items.removeClass('newPlay');
     while (playLog.length > 0) {
         playLog.pop();
     }
 });
-
 
 //  set a timer after first click which resets to 0 on the second click &&
 //  set the action & scoring logic for each two clicks
@@ -122,33 +121,38 @@ const newPlay = (x) => { // the play controls and points function
     
     console.log(scoreTrack);
     
-    if (moves == 0) {
+    if (moves < 1) {
         item.addClass('newPlay');
         playLog.push(item);
         logs(item['0'].id);
+        
     } else {
         
-        while (moves > 0 && moves < items.length ) {
+        while (moves < items.length && (item.hasClass('newPlay') === false)) {
             playLog.forEach((i) => {
                 logs(i['0'].id, item);
-                item.addClass('newPlay');
-                if (item['0'].id != i['0'].id && item['0'].innerHTML === i['0'].innerHTML) {
-                    item.addClass('newPlay');
-                    playLog.push(item);
-                    
+//                item.addClass('newPlay');
+                
                 if (moves % 2 == 0) {
-                    alert('Nice Match *!');
+                    alert('Two Matched *!');
                     scoreTrack;
                     logs(scoreTrack);
                     $('#score').innerHTML = scoreTrack.scoreCount()
                     
-                }                    
-                    
+                }
+                
+                
+                if (item['0'].id != i['0'].id && item['0'].innerHTML === i['0'].innerHTML) {
+                    if (item.hasClass('newPlay') === false) {
+                        playLog.push(item);
+                        item.addClass('newPlay');                        
+                    }
                     
                 } else {
                     if (item['0'].id != i['0'].id) {
                         alert('invalid play');
                         item.removeClass('newPlay');
+                        
                     }
                 }
                         
@@ -185,7 +189,6 @@ class Get {
 }
 
 var scoreTrack = new Get('', '');
-
 
 //$(document).ready(() => { // unnecessary for now
     
