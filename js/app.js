@@ -10,7 +10,7 @@ const logs = console.log;
 const items = $('.item');
 const icons1 = ['☺','☺','☆','★','♡','❤'];
 const icons2 = ['1','2','3','4','5','6'];
-const icons = icons2;
+const icons = icons1;
 
 const slotsLngth = items.length;
 var gfxLngth = icons.length;
@@ -19,25 +19,21 @@ logs(slotsLngth + ':All slots.' + gfxLngth + ':Icons(gfx)count');
 
 // variables for the for loop to get a range of random numbers
 var z = gfxLngth;
-
 const randValue = () => {
-//    let w = Math.floor((Math.random() * z) + 0); // what was different?... only the variable name
     let x = Math.floor((Math.random() * z) + 0);
     return x;
+    
 };
-
 let randValueNi = (high, low) => {
     let xx = Math.floor((Math.random() * high) + low);
-    
-//    if (xx <= high && xx >= low) {
         return xx;
-//    } else { return false}
+        
 };
 
 const togameboard = []; //for use in generating gameboard on each load
 const firstZero = []; // *** I used this arr to limit 0 index from pushing more than once, it still did not work 100% with the randomValue ...
 const playLog = []; //for player in-game only
-const randomLog = [];
+const randomLog = []; //used for randomization checking
 
 
 nameInputDiv.toggleClass('hidden');
@@ -51,11 +47,35 @@ nameinput.change(() => {
 
 });
 
+/* standard BUTTONS */
+// the submit button behaviour
 submitName.click((event) => {
     nameInputDiv.toggleClass('popup');
     event.preventDefault();
     
 });
+
+// the style options buttons
+$('#s1').click(() => {
+    $('#gamearea').removeClass('style2');
+    $('#gamearea > div').removeClass('style2');
+});
+$('#s2').click(() => {
+    $('#gamearea').addClass('style2');
+    $('#gamearea > div').addClass('style2');
+});
+
+//  set a timer after first click which resets to 0 on the second click &&
+//  set the action & scoring logic for each two clicks
+    // add the onlcick function to the gameBoard elements
+    for (let i= 0; i <= items.length; i++) {
+        $('#'+i).click(() => {
+            
+            newPlay(i);
+            
+        });
+        
+    }
 
 //feed input name to display size as typing
 nameinput.on('keyup', () => {
@@ -63,6 +83,7 @@ nameinput.on('keyup', () => {
 
 });
 
+// to attempt to eliminate duplicate random numbers before pushing to the gameBoard
 const getGameboard = togameboard.forEach((ret) => {
             logs(ret + " frm getGameboard");
                 if (togameboard > 0 && ret == randValue()) {
@@ -71,41 +92,77 @@ const getGameboard = togameboard.forEach((ret) => {
             return false;
         });
 
-const newPlay = (x) => {
-    items[x].addClass('newPlay');
-    playLog.push(x);
-    logs(x.html() +" was added to: .. ", playLog + "(play log)");
+const newPlay = (x) => { // the play controls and points function
+
+    let item = $('#'+x);
+    let moves = playLog.length;
     
+    console.log(scoreTrack);
+    
+    if (moves == 0) {
+        item.addClass('newPlay');
+        playLog.push(item);
+        logs(item['0'].id);
+    } else {
+        
+        while (moves > 0 && moves < items.length ) {
+            playLog.forEach((i) => {
+                logs(i['0'].id, item);
+                item.addClass('newPlay');
+                if (item['0'].id != i['0'].id && item['0'].innerHTML === i['0'].innerHTML) {
+                    item.addClass('newPlay');
+                    playLog.push(item);
+                    
+                } else {
+                    if (item['0'].id != i['0'].id) {
+                        alert('invalid play');
+                        item.removeClass('newPlay');
+                    }
+                }
+                        
+            });
+            
+                    if (moves % 2 == 0) {
+                        alert('Nice Match *!')
+                        scoreTrack;
+                        logs(scoreTrack);
+                        $('#score').innerHTML = scoreTrack.scoreCount()
+                        
+                    }
+            
+            break;
+            
+        }
+
+    }
+    
+
 };
 
-const evaluate = (x) => {
-        playLog.push(x);
-        logs(x + "testing");
-//        timer();
-};
 
-class Get {
-    constructor(timer, scoreCount, randomIndex) {
+//timer is to start the count from the click and moveTimeSpan picks up after the second click to push time to the scoreCount calculator
+class Get { 
+    constructor(timer, moveTimeSpan) {
         this.timer = () => {
                 let start = 0;
-                setInterval(this.moveTimespan, 1000);
-                this.moveTimespan(start);
+                setInterval(this.moveTimespan(start), 1000);
         },
                 
         this.moveTimespan = (x) => {
                 x+=1;
-                $('#timer').html(x);
-        },
-                
-        this.scoreCount = () => {
-            return 100 * this.timer;
-        },
-        
-        this.randomIndex = randValue();
-        
+                $('#timer').innerHTML = x;
+        };
     }
+    
+    scoreCount(x) {
+        return .1 * this.moveTimespan(x);
+        
+    }    
 
 }
+
+var scoreTrack = new Get(0,1);
+
 
 //$(document).ready(() => { // unnecessary for now
     
@@ -159,13 +216,6 @@ for (let i = 0; i < halfBoard; i++) {
     let x = halfBoard;
     items[i+x].append(items[i].innerText);
 }
-
-//logs(items);
-
-//  set a timer after first click which resets to 0 on the second click &&
-//  set the action & scoring logic for each two clicks
-    // add the onlcick function to the gameBoard elements
-
 
 
 //}); // end of document.ready
