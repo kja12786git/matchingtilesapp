@@ -59,10 +59,24 @@ submitName.click((event) => {
 $('#s1').click(() => {
     $('#gamearea').removeClass('style2');
     $('#gamearea > div').removeClass('style2');
+    $('#gamearea > div > div').removeClass('style3');
+    
 });
+
 $('#s2').click(() => {
+    $('#gamearea > div > div').removeClass('style3');
     $('#gamearea').addClass('style2');
     $('#gamearea > div').addClass('style2');
+    
+});
+
+$('#s3').click(() => {
+    $('#gamearea').addClass('style2');
+    $('#gamearea').removeClass('style2');
+    $('#gamearea > div').removeClass('style2');
+    $('#gamearea > div > div').addClass('style3');
+
+    
 });
 
 // new game or reset game
@@ -123,7 +137,7 @@ const newPlay = (x) => { // the play controls and points function
                     playLog.push(item);
                     
                 if (moves % 2 == 0) {
-                    alert('Nice Match *!')
+                    alert('Nice Match *!');
                     scoreTrack;
                     logs(scoreTrack);
                     $('#score').innerHTML = scoreTrack.scoreCount()
@@ -149,7 +163,6 @@ const newPlay = (x) => { // the play controls and points function
 
 };
 
-
 //timer is to start the count from the click and moveTimeSpan picks up after the second click to push time to the scoreCount calculator
 class Get { 
     constructor(timer, moveTimeSpan) {
@@ -171,15 +184,12 @@ class Get {
 
 }
 
-var scoreTrack = new Get(0,1);
+var scoreTrack = new Get('', '');
 
 
 //$(document).ready(() => { // unnecessary for now
     
-// append each of the given icons to a button on the gameboard twice in random sequence
-// there must be two of each and not three for the standard 3*4 gameboard.
-// to do this I can push random number from [0 to desired length] to an array replace any additional copy until it is complete
-// a good way may be to generate a first half randomly, and then pull values from a duplicate array to randomize the remaining half using the original values
+// append each of the given icons to a button on the gameboard twice in random sequence. The random return can only be controlled by a range starting from 0. So, it is not absolutely possible to limit the reccurences with this Javascript method unless maybe I limit the range from 0 to 2 and restart the loop every 2 pushes while pushing them all to an array and popping the two that already pushed. I attempted to push a random number from [0 to desired length] to an array replace any additional copy until it is complete. It didn't work because it kept looping and crashed so I had to just let it go without stressin for unique returns only. A good way may be to generate a first half randomly, and then pull values from a duplicate array to randomize the remaining half using the original values
 
 let halfBoard = slotsLngth/2;
 for (let x = 0; x < halfBoard; x++) { // ***I have simplified this without need for the longer code I had before. It still does not give a perfect variety of random options between a set range, but I suppose this is something I cannot evaluate with this method.
