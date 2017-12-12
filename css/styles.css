@@ -208,3 +208,36 @@ footer {
     opacity: .4;
 
 }
+
+#tracker {
+    position: relative;
+}
+#tracker > li {
+    display: block;
+}
+
+#score,#timer {
+    position: relative;
+}
+
+#score {
+/*    top: 100px; */
+}
+
+#score:before {
+    content:'ScoreX';
+    position: absolute;
+    left: -3rem;
+    font-size: 66%;
+}
+#timer:before {
+    content: 'Time:';
+    position: absolute;
+    left: -2.1rem;
+    font-size: 66%;    
+}
+#ambientMusic {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
