@@ -34,7 +34,7 @@ const togameboard = []; //for use in generating gameboard on each load
 const firstZero = []; // *** I used this arr to limit 0 index from pushing more than once, it still did not work 100% with the randomValue ...
 const playLog = []; //for player in-game only
 const randomLog = []; //used for randomization checking
-
+const timerLog = []; //to accurately account for clicks similar to timestamp
 
 nameInputDiv.toggleClass('hidden');
 nameInputDiv.toggleClass('popup');
@@ -82,15 +82,39 @@ $('#s3').click(() => {
 // reset gameboard
 $('#reset').click(() => {
     items.removeClass('newPlay');
+    clearInterval(setTimer);
+
+    $('#timer').text(0);
+    $('#score').text(0);
+//    setTimer;
+    
     while (playLog.length > 0) {
         playLog.pop();
     }
 });
 
-//  set a timer after first click which resets to 0 on the second click &&
-//  set the action & scoring logic for each two clicks
-    // add the onlcick function to the gameBoard elements
-    for (let i= 0; i <= items.length; i++) {
+/*  set a timer after first click which resets to 0 on the second click && set the action & scoring logic for each two clicks */
+
+/*    let scoreCount = ScoreTrack. (timer) {
+        return .1 * this.moveTimespan();
+        
+    }*/
+    
+let startTimer = () => {
+    //    const d = new Date();
+    //    const n = d.getSeconds();
+    let x = document.getElementById('timer');
+    let y = x.innerHTML;
+    let z = parseInt(y);
+    z+=1;
+//    logs(y + ' is this giving me the 0?');
+    x.innerHTML= z;
+    
+    //    x = parseInt(x);
+};
+
+// add the onlcick function to the gameBoard elements
+for (let i= 0; i <= items.length; i++) {
         $('#'+i).click(() => {
             
             newPlay(i);
@@ -105,6 +129,9 @@ nameinput.on('keyup', () => {
 
 });
 
+/*let tgbcheck = togameboard.find(1);
+logs(tgbcheck + 'find togameboard');*/
+
 // to attempt to eliminate duplicate random numbers before pushing to the gameBoard
 const getGameboard = togameboard.forEach((ret) => {
             logs(ret + " frm getGameboard");
@@ -113,82 +140,85 @@ const getGameboard = togameboard.forEach((ret) => {
                 }
             return false;
         });
+        
+const setTimer = setInterval(startTimer, 1000);
 
 const newPlay = (x) => { // the play controls and points function
 
     let item = $('#'+x);
     let moves = playLog.length;
+
+    if (moves < 1) {    
+        setTimer;
+    }
     
-    console.log(scoreTrack);
+//    window.setTimererval(startTimer, 1000);
+//    console.log(scoreTrack);
+    if (moves % 2 == 0 && moves > 1) {
+        clearInterval(setTimer);
+    }
     
-    if (moves < 1) {
+    if (moves < 1 /*2 && moves % 2 != 0*/) {
         item.addClass('newPlay');
         playLog.push(item);
-        logs(item['0'].id);
+        logs(item['0'].id + ' console feed id# frm key data.');
         
-    } else {
-        
-        while (moves < items.length && (item.hasClass('newPlay') === false)) {
-            playLog.forEach((i) => {
-                logs(i['0'].id, item);
-//                item.addClass('newPlay');
-                
-                if (moves % 2 == 0) {
-                    alert('Two Matched *!');
-                    scoreTrack;
-                    logs(scoreTrack);
-                    $('#score').innerHTML = scoreTrack.scoreCount()
-                    
-                }
-                
-                
-                if (item['0'].id != i['0'].id && item['0'].innerHTML === i['0'].innerHTML) {
-                    if (item.hasClass('newPlay') === false) {
-                        playLog.push(item);
-                        item.addClass('newPlay');                        
-                    }
-                    
-                } else {
-                    if (item['0'].id != i['0'].id) {
-                        alert('invalid play');
-                        item.removeClass('newPlay');
-                        
-                    }
-                }
-                        
-            });
-            
-            break;
-            
-        }
+        $('#timer').html(0);
 
-    }
+//        setTimer; // setTimererval(startTimer, 1000);
     
-
-};
+        } else {
+            
+            while (moves < items.length && (item.hasClass('newPlay') === false)) {
+                playLog.forEach((i) => {
+                    logs(i['0'].id, item);
+    //                item.addClass('newPlay');
+                    
+                    if (moves % 2 == 0) {
+                        clearInterval(setTimer);                        
+                        alert('Two Matched *!');
+                        logs(scoreTrack + 'scoreTrack return');
+                        let x = document.getElementById('timer').innerText;
+                        $('#score').text(1000 - x*2);
+                        
+                        
+                    }
+                    
+                    
+                    if (item['0'].id != i['0'].id && item['0'].innerHTML === i['0'].innerHTML) {
+                        if (item.hasClass('newPlay') === false) {
+                            playLog.push(item);
+                            item.addClass('newPlay');                        
+                        }
+                        
+                    } else {
+                        if (item['0'].id != i['0'].id) {
+                            alert('invalid play');
+                            item.removeClass('newPlay');
+                            
+                        }
+                    }
+                            
+                });
+                
+                break;
+                
+            }
+    
+        }
+    
+    };
 
 //timer is to start the count from the click and moveTimeSpan picks up after the second click to push time to the scoreCount calculator
-class Get { 
-    constructor(timer, moveTimeSpan) {
-        this.timer = () => {
-                let start = 0;
-                setInterval(this.moveTimespan(start), 1000);
-        },
-                
-        this.moveTimespan = (x) => {
-                x+=1;
-                $('#timer').innerHTML = x;
-        };
+class Get {
+    constructor(timer, points) {
+        this.timer = timer;
+        this.points = points;
     }
-    
-    scoreCount(x) {
-        return .1 * this.moveTimespan(x);
-        
-    }    
 
 }
 
-var scoreTrack = new Get('', '');
+var scoreTrack = new Get('',''); // for to $('#timer').html()
 
 //$(document).ready(() => { // unnecessary for now
     
@@ -201,7 +231,7 @@ for (let x = 0; x < halfBoard; x++) { // ***I have simplified this without need 
     
     if (togameboard.length == 0) {
         togameboard.push(w);
-        items[x].append(icons[w] + 'temp');
+        items[x].append(icons[w]);
         continue;
     } // *** it worked perfectly one time but not consistently
     
@@ -210,7 +240,7 @@ for (let x = 0; x < halfBoard; x++) { // ***I have simplified this without need 
     } else {
         togameboard.push(w);
         logs(togameboard + " all made it to the gameboard.");
-        items[x].append(icons[w] + 'temp');
+        items[x].append(icons[w]);
         
         //duplicate the values of the first half of the gameboard to create matches for the game to wor
         while (x == (slotsLngth/2 - 1) && togameboard.length != slotsLngth) {
