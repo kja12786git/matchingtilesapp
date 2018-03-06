@@ -22,12 +22,12 @@ var z = gfxLngth;
 const randValue = () => {
     let x = Math.floor((Math.random() * z) + 0);
     return x;
-    
+
 };
 let randValueNi = (high, low) => {
     let xx = Math.floor((Math.random() * high) + low);
         return xx;
-        
+
 };
 
 const togameboard = []; //for use in generating gameboard on each load
@@ -35,6 +35,7 @@ const firstZero = []; // *** I used this arr to limit 0 index from pushing more 
 const playLog = []; //for player in-game only
 const randomLog = []; //used for randomization checking
 const timerLog = []; //to accurately account for clicks similar to timestamp
+const totalPoints = [];
 
 nameInputDiv.toggleClass('hidden');
 nameInputDiv.toggleClass('popup');
@@ -52,7 +53,7 @@ nameinput.change(() => {
 submitName.click((event) => {
     nameInputDiv.toggleClass('popup');
     event.preventDefault();
-    
+
 });
 
 // the style options buttons
@@ -60,14 +61,14 @@ $('#s1').click(() => {
     $('#gamearea').removeClass('style2');
     $('#gamearea > div').removeClass('style2');
     $('#gamearea > div > div').removeClass('style3');
-    
+
 });
 
 $('#s2').click(() => {
     $('#gamearea > div > div').removeClass('style3');
     $('#gamearea').addClass('style2');
     $('#gamearea > div').addClass('style2');
-    
+
 });
 
 $('#s3').click(() => {
@@ -76,7 +77,7 @@ $('#s3').click(() => {
     $('#gamearea > div').removeClass('style2');
     $('#gamearea > div > div').addClass('style3');
 
-    
+
 });
 
 // reset gameboard
@@ -87,9 +88,10 @@ $('#reset').click(() => {
     $('#timer').text(0);
     $('#score').text(0);
 //    setTimer;
-    
+
     while (playLog.length > 0) {
         playLog.pop();
+
     }
 });
 
@@ -97,9 +99,9 @@ $('#reset').click(() => {
 
 /*    let scoreCount = ScoreTrack. (timer) {
         return .1 * this.moveTimespan();
-        
+
     }*/
-    
+
 let startTimer = () => {
     //    const d = new Date();
     //    const n = d.getSeconds();
@@ -109,18 +111,17 @@ let startTimer = () => {
     z+=1;
 //    logs(y + ' is this giving me the 0?');
     x.innerHTML= z;
-    
+
     //    x = parseInt(x);
 };
 
 // add the onlcick function to the gameBoard elements
 for (let i= 0; i <= items.length; i++) {
         $('#'+i).click(() => {
-            
             newPlay(i);
-            
+
         });
-        
+
     }
 
 //feed input name to display size as typing
@@ -140,7 +141,7 @@ const getGameboard = togameboard.forEach((ret) => {
                 }
             return false;
         });
-        
+
 const setTimer = setInterval(startTimer, 1000);
 
 const newPlay = (x) => { // the play controls and points function
@@ -148,65 +149,62 @@ const newPlay = (x) => { // the play controls and points function
     let item = $('#'+x);
     let moves = playLog.length;
 
-    if (moves < 1) {    
-        setTimer;
-    }
-    
-//    window.setTimererval(startTimer, 1000);
-//    console.log(scoreTrack);
-    if (moves % 2 == 0 && moves > 1) {
-        clearInterval(setTimer);
-    }
-    
-    if (moves < 1 /*2 && moves % 2 != 0*/) {
-        item.addClass('newPlay');
-        playLog.push(item);
-        logs(item['0'].id + ' console feed id# frm key data.');
-        
+    if (moves < 1 || moves % 2 == 0) {
+        //restart timer for each play
         $('#timer').html(0);
 
-//        setTimer; // setTimererval(startTimer, 1000);
-    
-        } else {
-            
-            while (moves < items.length && (item.hasClass('newPlay') === false)) {
+        // mark this play as recorded
+        item.addClass('newPlay');
+        playLog.push(item);
+        setTimer;
+        logs(item['0'].id + ' console feed id# frm key data.');
+
+    }
+    else {
+        clearInterval(setTimer);
+
+    }
+
+    if (moves < 1 /*2 && moves % 2 != 0*/) {
+        logs('First move now played...')
+
+        }
+    else {
+      while (moves < items.length && (item.hasClass('newPlay') === false)) {
                 playLog.forEach((i) => {
                     logs(i['0'].id, item);
-    //                item.addClass('newPlay');
-                    
-                    if (moves % 2 == 0) {
-                        clearInterval(setTimer);                        
+
+                    if (item['0'].id === i['0'].id || item['0'].innerHTML != i['0'].innerHTML) {
+                      alert('invalid play');
+                      item.removeClass('newPlay');
+                    }
+                    else {
+                      if (moves % 2 != 0) {
+                        clearInterval(setTimer);
+
                         alert('Two Matched *!');
-                        logs(scoreTrack + 'scoreTrack return');
+
+                        playLog.push(item);
+                        item.addClass('newPlay');
+
+                        logs(scoreTrack + ' is what scoreTrack returned');
                         let x = document.getElementById('timer').innerText;
-                        $('#score').text(1000 - x*2);
-                        
-                        
+                        let playPoints = $('#score').text(1000 - x*2);
+                        playPoints;
+                        totalPoints.push(1000-x*2);
+                        logs(`${totalPoints} is total point `);
+                      }
                     }
-                    
-                    
-                    if (item['0'].id != i['0'].id && item['0'].innerHTML === i['0'].innerHTML) {
-                        if (item.hasClass('newPlay') === false) {
-                            playLog.push(item);
-                            item.addClass('newPlay');                        
-                        }
-                        
-                    } else {
-                        if (item['0'].id != i['0'].id) {
-                            alert('invalid play');
-                            item.removeClass('newPlay');
-                            
-                        }
-                    }
-                            
+
+
                 });
-                
+
                 break;
-                
-            }
-    
+
+            };
+
         }
-    
+
     };
 
 //timer is to start the count from the click and moveTimeSpan picks up after the second click to push time to the scoreCount calculator
@@ -221,27 +219,27 @@ class Get {
 var scoreTrack = new Get('',''); // for to $('#timer').html()
 
 //$(document).ready(() => { // unnecessary for now
-    
+
 // append each of the given icons to a button on the gameboard twice in random sequence. The random return can only be controlled by a range starting from 0. So, it is not absolutely possible to limit the reccurences with this Javascript method unless maybe I limit the range from 0 to 2 and restart the loop every 2 pushes while pushing them all to an array and popping the two that already pushed. I attempted to push a random number from [0 to desired length] to an array replace any additional copy until it is complete. It didn't work because it kept looping and crashed so I had to just let it go without stressin for unique returns only. A good way may be to generate a first half randomly, and then pull values from a duplicate array to randomize the remaining half using the original values
 
 let halfBoard = slotsLngth/2;
 for (let x = 0; x < halfBoard; x++) { // ***I have simplified this without need for the longer code I had before. It still does not give a perfect variety of random options between a set range, but I suppose this is something I cannot evaluate with this method.
     let w = randValue();
     randomLog.push(w); logs(randomLog + " random generated log.");
-    
+
     if (togameboard.length == 0) {
         togameboard.push(w);
         items[x].append(icons[w]);
         continue;
     } // *** it worked perfectly one time but not consistently
-    
+
     if (togameboard.length > 0 && getGameboard === false ) {
         continue;
     } else {
         togameboard.push(w);
         logs(togameboard + " all made it to the gameboard.");
         items[x].append(icons[w]);
-        
+
         //duplicate the values of the first half of the gameboard to create matches for the game to wor
         while (x == (slotsLngth/2 - 1) && togameboard.length != slotsLngth) {
            togameboard.forEach((i) => {
@@ -249,16 +247,14 @@ for (let x = 0; x < halfBoard; x++) { // ***I have simplified this without need 
            });
         }
     }
-    
-    
-    
+
 }
 
 // to create second half of gameboard and randomize I will pull from the previous for loop which this will be dependent on because the values were already duplicated for use in the gameboard
 for (let x = halfBoard; x < slotsLngth; x++) {
     let getRandom = randValueNi(x,(slotsLngth - slotsLngth));
     logs(getRandom + ' current random from togameboard'); // since this random value return does not work well I may have to feed the values from the ones already pushed to the DOM
-    
+
 //    items[x].append(togameboard[getRandom] + 'temp');
 //    logs(getRandom);
 
