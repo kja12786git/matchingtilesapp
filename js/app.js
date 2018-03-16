@@ -77,7 +77,6 @@ $('#s3').click(() => {
     $('#gamearea > div').removeClass('style2');
     $('#gamearea > div > div').addClass('style3');
 
-
 });
 
 // reset gameboard
@@ -93,6 +92,7 @@ $('#reset').click(() => {
         playLog.pop();
 
     }
+
 });
 
 /*  set a timer after first click which resets to 0 on the second click && set the action & scoring logic for each two clicks */
@@ -103,16 +103,16 @@ $('#reset').click(() => {
     }*/
 
 let startTimer = () => {
-    //    const d = new Date();
-    //    const n = d.getSeconds();
+    //  const d = new Date();
+    //  const n = d.getSeconds();
     let x = document.getElementById('timer');
     let y = x.innerHTML;
     let z = parseInt(y);
     z+=1;
-//    logs(y + ' is this giving me the 0?');
+    //   logs(y + ' is this giving me the 0?');
     x.innerHTML= z;
-
     //    x = parseInt(x);
+
 };
 
 // add the onlcick function to the gameBoard elements
@@ -159,9 +159,9 @@ const newPlay = (x) => { // the play controls and points function
         setTimer;
         logs(item['0'].id + ' console feed id# frm key data.');
 
-    }
-    else {
-        clearInterval(setTimer);
+      }
+      else {
+          clearInterval(setTimer);
 
     }
 
@@ -169,41 +169,44 @@ const newPlay = (x) => { // the play controls and points function
         logs('First move now played...')
 
         }
-    else {
-      while (moves < items.length && (item.hasClass('newPlay') === false)) {
-                playLog.forEach((i) => {
-                    logs(i['0'].id, item);
+      else {
+        while (moves < items.length && (item.hasClass('newPlay') === false)) {
+                  playLog.forEach((i) => {
+                      logs(i['0'].id, item);
 
-                    if (item['0'].id === i['0'].id || item['0'].innerHTML != i['0'].innerHTML) {
-                      alert('invalid play');
-                      item.removeClass('newPlay');
-                    }
-                    else {
-                      if (moves % 2 != 0) {
-                        clearInterval(setTimer);
-
-                        alert('Two Matched *!');
-
-                        playLog.push(item);
-                        item.addClass('newPlay');
-
-                        logs(scoreTrack + ' is what scoreTrack returned');
-                        let x = document.getElementById('timer').innerText;
-                        let playPoints = $('#score').text(1000 - x*2);
-                        playPoints;
-                        totalPoints.push(1000-x*2);
-                        logs(`${totalPoints} is total point `);
+                      if (item['0'].id === i['0'].id || item['0'].innerHTML != i['0'].innerHTML) {
+                        alert('invalid play');
+                        item.removeClass('newPlay');
                       }
-                    }
+                      else {
+                        if (moves % 2 != 0) {
+                          clearInterval(setTimer);
+
+                          alert('Two Matched *!');
+
+                          playLog.push(item);
+                          item.addClass('newPlay');
+
+                          logs(scoreTrack + ' is what scoreTrack returned');
+                          let x = document.getElementById('timer').innerText;
+                          x = x.value;
+                          logs(`The current value of timer... is ${x}`);
+                          let playPoints = $('#score').text(1000 - x*2);
+                          playPoints;
+                          totalPoints.push(1000-x*2);
+                          logs(`${totalPoints} is total point `);
+
+                        }
+                      }
 
 
-                });
+                  });
 
-                break;
+                  break;
 
-            };
+              };
 
-        }
+          }
 
     };
 
@@ -235,17 +238,17 @@ for (let x = 0; x < halfBoard; x++) { // ***I have simplified this without need 
 
     if (togameboard.length > 0 && getGameboard === false ) {
         continue;
-    } else {
-        togameboard.push(w);
-        logs(togameboard + " all made it to the gameboard.");
-        items[x].append(icons[w]);
+      } else {
+          togameboard.push(w);
+          logs(togameboard + " all made it to the gameboard.");
+          items[x].append(icons[w]);
 
-        //duplicate the values of the first half of the gameboard to create matches for the game to wor
-        while (x == (slotsLngth/2 - 1) && togameboard.length != slotsLngth) {
-           togameboard.forEach((i) => {
-               togameboard.push(i);
-           });
-        }
+          //duplicate the values of the first half of the gameboard to create matches for the game to wor
+          while (x == (slotsLngth/2 - 1) && togameboard.length != slotsLngth) {
+             togameboard.forEach((i) => {
+                 togameboard.push(i);
+             });
+          }
     }
 
 }
