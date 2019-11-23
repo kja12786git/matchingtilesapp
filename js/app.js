@@ -10,7 +10,7 @@ const logs = console.log;
 const items = $('.item');
 const icons1 = ['☺','☺','☆','★','♡','❤'];
 const icons2 = ['1','2','3','4','5','6'];
-const icons = icons1;
+const icons = icons2;
 
 const slotsLngth = items.length;
 var gfxLngth = icons.length;
@@ -268,10 +268,3 @@ for (let i = 0; i < halfBoard; i++) {
     let x = halfBoard;
     items[i+x].append(items[i].innerText);
 }
-
-
-//}); // end of document.ready
-
-
-
-//});

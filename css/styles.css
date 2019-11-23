@@ -5,9 +5,9 @@ body {
     position: relative;
     cursor: default;
     font-family: sans-serif;
-    min-width: 700px;
+//    min-width: 700px;
     overflow-x: scroll;
-    
+
 }
 
 body, body * {
@@ -15,7 +15,7 @@ body, body * {
     border: 0;
     padding: 0;
     font-size: 100%;
-    
+
 }
 
 header {
@@ -26,7 +26,7 @@ header {
     margin-top: 1rem;
     padding-top: 1rem;
     text-indent: 1rem;
-    
+
 }
 
 header > aside {
@@ -34,20 +34,20 @@ header > aside {
     float: right;
     top: 1rem;
     right: 1rem;
-    
+
 }
 
 header > h1 {
     text-indent: 1rem;
     font-size: 300%;
-    
+
 }
 
 button {
     box-shadow: 1px 3px 3px #CCC;
     height: 37px;
     min-width: 100px;
-    
+
 }
 
 ul {
@@ -64,7 +64,7 @@ ul li {
     position: fixed;
     z-index: -1;
     transition: all 1s;
-    
+
 }
 
 .popup {
@@ -77,25 +77,25 @@ ul li {
     height: 85%;
     margin: auto;
     top: 20px;
-    
+
 }
 
 .nameFeed {
     text-indent: 1rem;
-    
+
 }
 
 .nameFeed:before {
     content: 'Player Name: ';
     color: #222;
-    
+
 }
 
 #gamearea {
     list-style: none;
     display: flex;
     background: #CCC;
-    
+
 }
 
 #gamearea > div {
@@ -114,14 +114,14 @@ ul li {
     background: white;
     margin: 1rem;
     border-radius: 2%;
-    
+
 }
 
 .item {
     text-align: center;
     font-family: Arial, sans-serif;
     font-size: 3rem;
-    
+
 }
 
 section#gameRules {
@@ -150,14 +150,14 @@ footer {
 .style2 {
     background: transparent !important;
     border: 0 !important;
-    
+
 }
 
 .style3 {
     position: relative;
     transition: all 1s;
     overflow: hidden;
-    
+
 }
 
 .style3:after {
@@ -184,7 +184,7 @@ footer {
 
 .newPlay {
     position: relative;
-    
+
 }
 
 .newPlay:after {
@@ -234,7 +234,7 @@ footer {
     content: 'Time:';
     position: absolute;
     left: -2.1rem;
-    font-size: 66%;    
+    font-size: 66%;
 }
 #ambientMusic {
     position: fixed;
